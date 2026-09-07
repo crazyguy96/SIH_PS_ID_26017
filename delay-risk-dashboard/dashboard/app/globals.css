@@ -1,0 +1,60 @@
+@import "leaflet/dist/leaflet.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply bg-paper text-ink dark:bg-[#0F1720] dark:text-[#E7E9E2];
+  }
+  ::selection {
+    @apply bg-teal/20;
+  }
+  *:focus-visible {
+    outline: 2px solid #2F5D62;
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+.hairline {
+  @apply border border-line dark:border-[#2A3742];
+}
+
+.hairline-b {
+  @apply border-b border-line dark:border-[#2A3742];
+}
+
+.hairline-t {
+  @apply border-t border-line dark:border-[#2A3742];
+}
+
+/* Leaflet Map styles fix */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  font-family: inherit;
+}
+
+.input {
+  @apply w-full text-sm rounded border border-line dark:border-[#2A3742]
+         bg-paper dark:bg-[#0F1720] text-ink dark:text-[#E7E9E2]
+         px-3 py-2 outline-none focus:border-teal;
+}
+
+.btn-primary {
+  @apply text-sm font-medium rounded bg-teal text-white px-4 py-2
+         hover:opacity-90 transition-opacity disabled:opacity-50
+         disabled:cursor-not-allowed;
+}

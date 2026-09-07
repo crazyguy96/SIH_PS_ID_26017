@@ -1,0 +1,467 @@
+{
+  "total_projects": 7955,
+  "high_risk": 4687,
+  "medium_risk": 2233,
+  "low_risk": 1035,
+  "by_region": [
+    {
+      "region_final": "Central",
+      "risk_tier": "High",
+      "count": 137
+    },
+    {
+      "region_final": "Central",
+      "risk_tier": "Low",
+      "count": 25
+    },
+    {
+      "region_final": "Central",
+      "risk_tier": "Medium",
+      "count": 89
+    },
+    {
+      "region_final": "East",
+      "risk_tier": "High",
+      "count": 578
+    },
+    {
+      "region_final": "East",
+      "risk_tier": "Low",
+      "count": 223
+    },
+    {
+      "region_final": "East",
+      "risk_tier": "Medium",
+      "count": 492
+    },
+    {
+      "region_final": "Multi-State/National",
+      "risk_tier": "High",
+      "count": 150
+    },
+    {
+      "region_final": "Multi-State/National",
+      "risk_tier": "Low",
+      "count": 57
+    },
+    {
+      "region_final": "Multi-State/National",
+      "risk_tier": "Medium",
+      "count": 82
+    },
+    {
+      "region_final": "North",
+      "risk_tier": "High",
+      "count": 979
+    },
+    {
+      "region_final": "North",
+      "risk_tier": "Low",
+      "count": 245
+    },
+    {
+      "region_final": "North",
+      "risk_tier": "Medium",
+      "count": 547
+    },
+    {
+      "region_final": "Northeast",
+      "risk_tier": "High",
+      "count": 424
+    },
+    {
+      "region_final": "Northeast",
+      "risk_tier": "Low",
+      "count": 63
+    },
+    {
+      "region_final": "Northeast",
+      "risk_tier": "Medium",
+      "count": 114
+    },
+    {
+      "region_final": "South",
+      "risk_tier": "High",
+      "count": 795
+    },
+    {
+      "region_final": "South",
+      "risk_tier": "Low",
+      "count": 164
+    },
+    {
+      "region_final": "South",
+      "risk_tier": "Medium",
+      "count": 356
+    },
+    {
+      "region_final": "Unknown",
+      "risk_tier": "High",
+      "count": 1171
+    },
+    {
+      "region_final": "Unknown",
+      "risk_tier": "Low",
+      "count": 106
+    },
+    {
+      "region_final": "Unknown",
+      "risk_tier": "Medium",
+      "count": 247
+    },
+    {
+      "region_final": "West",
+      "risk_tier": "High",
+      "count": 453
+    },
+    {
+      "region_final": "West",
+      "risk_tier": "Low",
+      "count": 152
+    },
+    {
+      "region_final": "West",
+      "risk_tier": "Medium",
+      "count": 306
+    }
+  ],
+  "by_sector": [
+    {
+      "sector_extracted": "ATOMIC ENERGY",
+      "risk_tier": "High",
+      "count": 2
+    },
+    {
+      "sector_extracted": "ATOMIC ENERGY",
+      "risk_tier": "Medium",
+      "count": 1
+    },
+    {
+      "sector_extracted": "CIVIL AVIATION",
+      "risk_tier": "High",
+      "count": 28
+    },
+    {
+      "sector_extracted": "CIVIL AVIATION",
+      "risk_tier": "Medium",
+      "count": 2
+    },
+    {
+      "sector_extracted": "COAL",
+      "risk_tier": "High",
+      "count": 25
+    },
+    {
+      "sector_extracted": "COAL",
+      "risk_tier": "Low",
+      "count": 10
+    },
+    {
+      "sector_extracted": "COAL",
+      "risk_tier": "Medium",
+      "count": 32
+    },
+    {
+      "sector_extracted": "COMMERCE",
+      "risk_tier": "Medium",
+      "count": 3
+    },
+    {
+      "sector_extracted": "DEFENCE PRODUCTION",
+      "risk_tier": "High",
+      "count": 3
+    },
+    {
+      "sector_extracted": "DEPARTMENT OF HIGHER EDUCATION",
+      "risk_tier": "High",
+      "count": 25
+    },
+    {
+      "sector_extracted": "DEPARTMENT OF HIGHER EDUCATION",
+      "risk_tier": "Low",
+      "count": 2
+    },
+    {
+      "sector_extracted": "DEPARTMENT OF HIGHER EDUCATION",
+      "risk_tier": "Medium",
+      "count": 6
+    },
+    {
+      "sector_extracted": "DONER",
+      "risk_tier": "High",
+      "count": 3
+    },
+    {
+      "sector_extracted": "DONER",
+      "risk_tier": "Medium",
+      "count": 1
+    },
+    {
+      "sector_extracted": "DPIIT",
+      "risk_tier": "High",
+      "count": 2
+    },
+    {
+      "sector_extracted": "FINANCE",
+      "risk_tier": "High",
+      "count": 3
+    },
+    {
+      "sector_extracted": "FINANCE",
+      "risk_tier": "Low",
+      "count": 6
+    },
+    {
+      "sector_extracted": "FINANCE",
+      "risk_tier": "Medium",
+      "count": 5
+    },
+    {
+      "sector_extracted": "HEALTH AND FAMILY WELFARE",
+      "risk_tier": "High",
+      "count": 177
+    },
+    {
+      "sector_extracted": "HEALTH AND FAMILY WELFARE",
+      "risk_tier": "Low",
+      "count": 167
+    },
+    {
+      "sector_extracted": "HEALTH AND FAMILY WELFARE",
+      "risk_tier": "Medium",
+      "count": 263
+    },
+    {
+      "sector_extracted": "HEAVY INDUSTRY",
+      "risk_tier": "Medium",
+      "count": 2
+    },
+    {
+      "sector_extracted": "HOME AFFAIRS",
+      "risk_tier": "High",
+      "count": 7
+    },
+    {
+      "sector_extracted": "MINES",
+      "risk_tier": "High",
+      "count": 5
+    },
+    {
+      "sector_extracted": "MINES",
+      "risk_tier": "Low",
+      "count": 2
+    },
+    {
+      "sector_extracted": "MINES",
+      "risk_tier": "Medium",
+      "count": 4
+    },
+    {
+      "sector_extracted": "PETROLEUM",
+      "risk_tier": "High",
+      "count": 43
+    },
+    {
+      "sector_extracted": "PETROLEUM",
+      "risk_tier": "Low",
+      "count": 21
+    },
+    {
+      "sector_extracted": "PETROLEUM",
+      "risk_tier": "Medium",
+      "count": 96
+    },
+    {
+      "sector_extracted": "POWER",
+      "risk_tier": "High",
+      "count": 64
+    },
+    {
+      "sector_extracted": "POWER",
+      "risk_tier": "Low",
+      "count": 1
+    },
+    {
+      "sector_extracted": "POWER",
+      "risk_tier": "Medium",
+      "count": 18
+    },
+    {
+      "sector_extracted": "RAILWAYS",
+      "risk_tier": "High",
+      "count": 281
+    },
+    {
+      "sector_extracted": "RAILWAYS",
+      "risk_tier": "Low",
+      "count": 232
+    },
+    {
+      "sector_extracted": "RAILWAYS",
+      "risk_tier": "Medium",
+      "count": 639
+    },
+    {
+      "sector_extracted": "RENEWABLE ENERGY",
+      "risk_tier": "High",
+      "count": 3
+    },
+    {
+      "sector_extracted": "RENEWABLE ENERGY",
+      "risk_tier": "Low",
+      "count": 1
+    },
+    {
+      "sector_extracted": "ROAD TRANSPORT AND HIGHWAYS",
+      "risk_tier": "High",
+      "count": 2189
+    },
+    {
+      "sector_extracted": "ROAD TRANSPORT AND HIGHWAYS",
+      "risk_tier": "Low",
+      "count": 142
+    },
+    {
+      "sector_extracted": "ROAD TRANSPORT AND HIGHWAYS",
+      "risk_tier": "Medium",
+      "count": 613
+    },
+    {
+      "sector_extracted": "SHIPPING AND PORTS",
+      "risk_tier": "High",
+      "count": 8
+    },
+    {
+      "sector_extracted": "SHIPPING AND PORTS",
+      "risk_tier": "Medium",
+      "count": 6
+    },
+    {
+      "sector_extracted": "SOCIAL JUSTICE",
+      "risk_tier": "High",
+      "count": 4
+    },
+    {
+      "sector_extracted": "STEEL",
+      "risk_tier": "High",
+      "count": 2
+    },
+    {
+      "sector_extracted": "STEEL",
+      "risk_tier": "Medium",
+      "count": 1
+    },
+    {
+      "sector_extracted": "TELECOMMUNICATIONS",
+      "risk_tier": "High",
+      "count": 9
+    },
+    {
+      "sector_extracted": "UNKNOWN",
+      "risk_tier": "High",
+      "count": 1726
+    },
+    {
+      "sector_extracted": "UNKNOWN",
+      "risk_tier": "Low",
+      "count": 436
+    },
+    {
+      "sector_extracted": "UNKNOWN",
+      "risk_tier": "Medium",
+      "count": 506
+    },
+    {
+      "sector_extracted": "URBAN DEVELOPMENT",
+      "risk_tier": "High",
+      "count": 7
+    },
+    {
+      "sector_extracted": "URBAN DEVELOPMENT",
+      "risk_tier": "Low",
+      "count": 10
+    },
+    {
+      "sector_extracted": "URBAN DEVELOPMENT",
+      "risk_tier": "Medium",
+      "count": 32
+    },
+    {
+      "sector_extracted": "WATER RESOURCES",
+      "risk_tier": "High",
+      "count": 71
+    },
+    {
+      "sector_extracted": "WATER RESOURCES",
+      "risk_tier": "Low",
+      "count": 5
+    },
+    {
+      "sector_extracted": "WATER RESOURCES",
+      "risk_tier": "Medium",
+      "count": 3
+    }
+  ],
+  "top_features": [
+    {
+      "feature": "project_age_months_at_report",
+      "importance": 1931
+    },
+    {
+      "feature": "physical_progress_pct",
+      "importance": 1655
+    },
+    {
+      "feature": "original_cost_crore",
+      "importance": 1643
+    },
+    {
+      "feature": "state_freq_encoded",
+      "importance": 1530
+    },
+    {
+      "feature": "anticipated_cost_crore_extracted",
+      "importance": 1511
+    },
+    {
+      "feature": "narrative_char_length",
+      "importance": 1406
+    },
+    {
+      "feature": "narrative_word_count",
+      "importance": 1129
+    },
+    {
+      "feature": "cost_overrun_pct_calc_clean",
+      "importance": 849
+    },
+    {
+      "feature": "extracted_scheduled_date_was_missing",
+      "importance": 423
+    },
+    {
+      "feature": "sector_extracted_UNKNOWN",
+      "importance": 331
+    },
+    {
+      "feature": "original_completion_date_was_missing",
+      "importance": 309
+    },
+    {
+      "feature": "num_issue_flags_v2",
+      "importance": 218
+    },
+    {
+      "feature": "sector_extracted_ROAD TRANSPORT AND HIGHWAYS",
+      "importance": 200
+    },
+    {
+      "feature": "region_final_South",
+      "importance": 198
+    },
+    {
+      "feature": "has_land_component_v2",
+      "importance": 189
+    }
+  ]
+}
