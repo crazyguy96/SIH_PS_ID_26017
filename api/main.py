@@ -960,10 +960,18 @@ def get_alerts_api(
     conn = get_connection()
 
     try:
-        columns = get_table_columns("alerts")
-
         rows = conn.execute(
-            "SELECT * FROM alerts ORDER BY rowid DESC"
+            """
+            SELECT
+                a.*,
+                ps.predicted_delay_probability AS score_probability,
+                ps.top_delay_drivers AS score_drivers,
+                ps.recommended_actions AS score_actions
+            FROM alerts a
+            LEFT JOIN project_scores ps
+                ON a.project_id = ps.project_id
+            ORDER BY a.rowid DESC
+            """
         ).fetchall()
 
         alerts = []
@@ -971,17 +979,11 @@ def get_alerts_api(
         for row in rows:
             r = dict(row)
 
-            # Probability
-            probability = (
-                r.get("predicted_delay_probability")
-                if r.get("predicted_delay_probability") is not None
-                else r.get("delay_probability")
+            # Get probability from project_scores
+            probability = safe_float(
+                r.get("score_probability")
             )
 
-            probability = safe_float(probability)
-
-            # Some datasets store probability as 0-1,
-            # others as 0-100.
             if probability > 1:
                 probability_fraction = probability / 100
             else:
@@ -994,14 +996,14 @@ def get_alerts_api(
             region = (
                 r.get("region")
                 or r.get("region_final")
-                or "Unknown"
+                or ""
             )
 
             # Sector
             sector = (
                 r.get("sector")
                 or r.get("sector_extracted")
-                or "Unknown"
+                or ""
             )
 
             # Driver
@@ -1009,6 +1011,7 @@ def get_alerts_api(
                 r.get("primary_driver")
                 or r.get("top_delay_driver")
                 or r.get("top_delay_drivers")
+                or r.get("score_drivers")
                 or r.get("driver")
                 or ""
             )
@@ -1046,16 +1049,17 @@ def get_alerts_api(
                 "severity": severity,
                 "primary_driver": str(primary_driver),
                 "label_confidence_tier": str(
-                    r.get("label_confidence_tier")
-                    or ""
+                    r.get("label_confidence_tier") or ""
                 ),
                 "timestamp": str(
                     r.get("timestamp")
                     or r.get("created_at")
+                    or r.get("run_timestamp")
                     or ""
                 ),
                 "recommended_actions": str(
                     r.get("recommended_actions")
+                    or r.get("score_actions")
                     or ""
                 ),
             })
@@ -1067,7 +1071,6 @@ def get_alerts_api(
 
     finally:
         conn.close()
-
 
 # -------------------------------------------------------------------
 # EXECUTIVE OVERVIEW
