@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# CatBoost generated files
+catboost_info/
+
+# Next.js
+delay-risk-dashboard/**/.next/
+delay-risk-dashboard/**/node_modules/
+delay-risk-dashboard/**/.turbo/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Temporary files
+*.log
+
+# Old model bundles / generated history
+model_output/history/
+model_output/model_bundle_*.joblib

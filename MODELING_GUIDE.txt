@@ -1,0 +1,58 @@
+SIH PS 26017 — MODELING GUIDE (UPDATED)
+
+Target:
+  target_is_delayed
+
+Classifier feature exclusion (MANDATORY):
+  time_overrun_months
+  time_overrun_months_was_missing
+
+Reason:
+  time_overrun_months is a near-direct proxy for the delay target and, for the
+  medium_time_overrun confidence tier, was used in target construction. Feeding
+  it into the classifier would make the model decode the labeling rule instead
+  of learning leading indicators. It is retained in the master dataset only for
+  audit/regression purposes.
+
+Do NOT use these as classifier features:
+  target_is_delayed
+  label_confidence_tier
+  is_unlabeled
+  ml_split_v2
+  project_id
+  quarter (unless deliberately engineered as a temporal feature)
+  time_overrun_months
+  time_overrun_months_was_missing
+
+Keep as a valid classifier feature:
+  physical_progress_pct
+
+Labeled split files:
+  infra_projects_train.csv
+  infra_projects_val.csv
+  infra_projects_test.csv
+  These split files have the two time-overrun input columns removed so they are
+  safe to use directly as classifier datasets.
+
+Master dataset:
+  infra_projects_ml_ready_clean.csv
+  This retains the full 55-column audit/reference schema, including
+  time_overrun_months, but the classifier must not use those two columns.
+
+Narratives:
+  infra_projects_narratives.csv
+  Contains project_id + quarter + raw_narrative for optional NLP/text-embedding
+  work. Join only on project_id + quarter. Do not use future text relative to
+  the prediction timestamp.
+
+Unlabeled inference:
+  infra_projects_inference_unlabeled.csv
+  Use only after the final classifier is frozen. target_is_delayed is blank.
+
+Split rule:
+  The train/validation/test split is project-level. Do not randomly re-split
+  rows; the same project's quarterly records must remain within one split.
+
+Preprocessing rule:
+  Any data-dependent imputer, encoder, scaler, feature selector, or text
+  vectorizer must be fitted on TRAIN only, then applied to validation/test.

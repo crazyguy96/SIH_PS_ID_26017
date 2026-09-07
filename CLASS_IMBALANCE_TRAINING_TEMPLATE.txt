@@ -1,0 +1,29 @@
+SIH PS 26017 — Class Imbalance Training Template
+
+The target is approximately imbalanced (~72% delayed / ~28% not delayed).
+Do not rebalance validation or test.
+
+Recommended starting point: Option A, tree-based weighting.
+For XGBoost:
+    neg = (train.target_is_delayed == 0).sum()
+    pos = (train.target_is_delayed == 1).sum()
+    scale_pos_weight = neg / pos
+
+For LightGBM:
+    LGBMClassifier(class_weight="balanced")
+
+For RandomForest:
+    RandomForestClassifier(class_weight="balanced")
+
+Alternative linear baseline:
+    LogisticRegression(class_weight="balanced", max_iter=1000)
+
+Alternative resampling:
+    Upsample ONLY the training split. Never resample val/test.
+
+Evaluate with F1, precision, recall, ROC-AUC and confusion matrix;
+do not rely on plain accuracy.
+
+Drop before X:
+    target_is_delayed, label_confidence_tier, is_unlabeled,
+    ml_split_v2, project_id, quarter

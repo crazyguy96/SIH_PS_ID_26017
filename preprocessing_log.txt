@@ -1,0 +1,12 @@
+1. Previous preprocessing/corrective pass retained.
+2. Leakage-control pass applied 2026-09-03:
+   - Removed `time_overrun_months` from classifier split files.
+   - Removed `time_overrun_months_was_missing` from classifier split files.
+   - Retained both columns in the 55-column master dataset for audit purposes and
+     possible separate delay-magnitude regression analysis.
+   - `physical_progress_pct` remains available as a classifier feature.
+3. Narrative companion restored:
+   - Added `infra_projects_narratives.csv` (49,732 rows; project_id + quarter + raw_narrative).
+   - Keys `project_id` + `quarter` are unique and match the master dataset row-for-row.
+4. No rows were removed by the leakage-control pass.
+5. Updated modeling documentation to make the classifier feature exclusion explicit.

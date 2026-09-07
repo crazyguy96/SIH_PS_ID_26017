@@ -1,0 +1,23 @@
+FINAL FIXES APPLIED — PS26017 ML-READY DATASET (V2)
+
+This package keeps the full 55-column master dataset for audit/reference and
+provides classifier-safe train/validation/test split files.
+
+LEAKAGE CONTROL
+1. Removed `time_overrun_months` from train/validation/test classifier files.
+2. Removed `time_overrun_months_was_missing` from train/validation/test classifier files.
+3. Kept those two columns in `infra_projects_ml_ready_clean.csv` only so the source
+   information remains available for auditing or a separate delay-magnitude
+   regression task.
+4. Kept `physical_progress_pct` because it is a legitimate observed project
+   progress signal and was not used to construct the target.
+
+NARRATIVE FILE
+5. Added `infra_projects_narratives.csv` back into the package. It contains
+   49,732 unique project_id + quarter records and is intended for optional NLP
+   / text-embedding / delay-cause extraction.
+
+IMPORTANT
+6. The classifier must not use time_overrun_months or
+   time_overrun_months_was_missing.
+7. All other previously applied cleaning rules remain unchanged.
