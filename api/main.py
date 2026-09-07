@@ -957,14 +957,6 @@ def query_alerts(min_probability=0.0):
 def get_alerts_api(
     min_probability: float = Query(0.0)
 ):
-    return query_alerts(min_probability)
-
-
-
-@app.get("/api/alerts")
-def get_alerts_api(
-    min_probability: float = Query(0.0)
-):
     conn = get_connection()
 
     try:
