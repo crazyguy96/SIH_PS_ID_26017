@@ -1,53 +1,59 @@
+import json
 import os
-import smtplib
-from email.message import EmailMessage
+import urllib.request
+import urllib.error
 
 
-def send_email(
-    recipients,
-    subject,
-    message,
-):
-    """
-    Send an alert email to the supplied recipients.
-    """
-
+def send_email(recipients, subject, message):
     if not recipients:
         print("No email recipients configured.")
         return False
 
-    smtp_host = os.getenv("ALERT_SMTP_HOST", "smtp.gmail.com")
-    smtp_port = int(os.getenv("ALERT_SMTP_PORT", "587"))
-    smtp_user = os.getenv("ALERT_SMTP_USER")
-    smtp_password = os.getenv("ALERT_SMTP_PASSWORD")
+    api_key = os.getenv("RESEND_API_KEY")
 
-    if not smtp_user or not smtp_password:
-        print(
-            "Email credentials are not configured. "
-            "Set ALERT_SMTP_USER and ALERT_SMTP_PASSWORD."
-        )
+    if not api_key:
+        print("RESEND_API_KEY is not configured.")
         return False
 
-    msg = EmailMessage()
+    sender = os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev")
 
-    msg["From"] = smtp_user
-    msg["To"] = ", ".join(recipients)
-    msg["Subject"] = subject
+    payload = {
+        "from": sender,
+        "to": recipients,
+        "subject": subject,
+        "html": f"""
+        <html>
+          <body>
+            <pre style="font-family: Arial, sans-serif; white-space: pre-wrap;">
+{message}
+            </pre>
+          </body>
+        </html>
+        """,
+    }
 
-    msg.set_content(message)
+    data = json.dumps(payload).encode("utf-8")
+
+    request = urllib.request.Request(
+        "https://api.resend.com/emails",
+        data=data,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
 
     try:
-        with smtplib.SMTP(smtp_host, smtp_port, timeout=30) as server:
-            server.starttls()
-            server.login(smtp_user, smtp_password)
-            server.send_message(msg)
+        with urllib.request.urlopen(request, timeout=30) as response:
+            response_body = response.read().decode("utf-8")
+            print(f"Email sent successfully via Resend: {response_body}")
+            return True
 
-        print(
-            f"Email sent successfully to: "
-            f"{', '.join(recipients)}"
-        )
-
-        return True
+    except urllib.error.HTTPError as exc:
+        error_body = exc.read().decode("utf-8", errors="replace")
+        print(f"Email dispatch failed: HTTP {exc.code} - {error_body}")
+        return False
 
     except Exception as exc:
         print(f"Email dispatch failed: {exc}")
