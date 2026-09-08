@@ -49,6 +49,7 @@ const EMPTY: NewProjectInput = {
   narrative_text: "",
   scheduled_completion_date: undefined,
   original_completion_date: undefined,
+  email: undefined,
 };
 
 const ISSUE_CHECKBOXES: { key: keyof NewProjectInput; label: string }[] = [
@@ -102,6 +103,26 @@ export function PredictNewProjectForm() {
             onChange={(e) => update("project_id", e.target.value)}
             placeholder="e.g. NEW-2026-001"
           />
+        <div className="space-y-1.5">
+          <label className="text-sm font-medium">
+            Email for prediction report{" "}
+            <span className="text-ink/50">(optional)</span>
+          </label>
+
+          <input
+            type="email"
+            placeholder="e.g. officer@example.gov.in"
+            value={form.email ?? ""}
+            onChange={(e) =>
+              update("email", e.target.value === "" ? undefined : e.target.value)
+            }
+            className="input"
+          />
+
+          <p className="text-xs text-ink/50">
+            Receive a detailed prediction report by email after the prediction.
+          </p>
+        </div>  
         </Field>
         <Field label="Scheduled completion date">
         <input

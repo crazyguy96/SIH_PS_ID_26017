@@ -295,6 +295,7 @@ export interface NewProjectInput {
   narrative_text?: string;
   scheduled_completion_date?: string;
   original_completion_date?: string;
+  email?: string;
 }
 
 export interface NewProjectPrediction {
