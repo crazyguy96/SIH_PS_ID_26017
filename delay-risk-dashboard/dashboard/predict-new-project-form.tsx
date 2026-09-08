@@ -97,46 +97,31 @@ export function PredictNewProjectForm() {
       <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Field label="Project ID (optional)">
           <input
-            type="text"
-            className="input"
-            value={form.project_id ?? ""}
+            value={form.project_id}
             onChange={(e) => update("project_id", e.target.value)}
-            placeholder="e.g. NEW-2026-001"
+            placeholder="e.g. N22000182"
+            className="input"
           />
+        </Field>
+
         <div className="space-y-1.5">
-          <label className="text-sm font-medium">
+          <label className="text-sm font-medium text-foreground">
             Email for prediction report{" "}
-            <span className="text-ink/50">(optional)</span>
+            <span className="text-muted-foreground">(optional)</span>
           </label>
 
           <input
             type="email"
-            placeholder="e.g. officer@example.gov.in"
-            value={form.email ?? ""}
-            onChange={(e) =>
-              update("email", e.target.value === "" ? undefined : e.target.value)
-            }
+            value={form.email}
+            onChange={(e) => update("email", e.target.value)}
+            placeholder="you@example.com"
             className="input"
           />
 
-          <p className="text-xs text-ink/50">
-            Receive a detailed prediction report by email after the prediction.
+          <p className="text-xs text-muted-foreground">
+            Receive the prediction result and risk details by email.
           </p>
-        </div>  
-        </Field>
-        <Field label="Scheduled completion date">
-        <input
-          type="date"
-          className="input"
-          value={form.scheduled_completion_date ?? ""}
-          onChange={(e) =>
-            update(
-              "scheduled_completion_date",
-              e.target.value || undefined
-            )
-          }
-        />
-      </Field>
+        </div>
 
       <Field label="Original planned completion date">
         <input
@@ -151,34 +136,19 @@ export function PredictNewProjectForm() {
           }
         />
       </Field>
-
-        <Field label="Original planned completion date">
-          <input
-            type="date"
-            className="input"
-            value={form.original_completion_date ?? ""}
-            onChange={(e) =>
-              update(
-                "original_completion_date",
-                e.target.value || undefined
-              )
-            }
-          />
-        </Field>
-
-        <Field label="Scheduled completion date">
-          <input
-            type="date"
-            className="input"
-            value={form.scheduled_completion_date ?? ""}
-            onChange={(e) =>
-              update(
-                "scheduled_completion_date",
-                e.target.value || undefined
-              )
-            }
-          />
-        </Field>
+      <Field label="Scheduled completion date">
+        <input
+          type="date"
+          className="input"
+          value={form.scheduled_completion_date ?? ""}
+          onChange={(e) =>
+            update(
+              "scheduled_completion_date",
+              e.target.value || undefined
+            )
+          }
+        />
+      </Field>
 
         <Field label="Region">
           <select

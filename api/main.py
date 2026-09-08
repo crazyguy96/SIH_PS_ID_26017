@@ -952,27 +952,6 @@ def query_alerts(min_probability=0.0):
     finally:
         conn.close()
 
-@app.get("/api/debug/db")
-def debug_db():
-    conn = get_connection()
-    try:
-        alert_count = conn.execute(
-            "SELECT COUNT(*) FROM alerts"
-        ).fetchone()[0]
-
-        project_score_count = conn.execute(
-            "SELECT COUNT(*) FROM project_scores"
-        ).fetchone()[0]
-
-        return {
-            "db_file": DB_FILE,
-            "db_size_bytes": os.path.getsize(DB_FILE),
-            "alert_count": alert_count,
-            "project_score_count": project_score_count,
-        }
-    finally:
-        conn.close()
-
 
 @app.get("/api/alerts")
 def get_alerts_api(
