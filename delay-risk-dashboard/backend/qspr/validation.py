@@ -11,7 +11,7 @@ from typing import List, Optional
 
 import pdfplumber
 
-from qspr.extractor import extract_report_label, find_header_col_map
+from qspr.extractor import extract_report_label, find_header_col_map, _release
 
 REQUIRED_TERMINOLOGY = ["paimana", "flash report"]
 
