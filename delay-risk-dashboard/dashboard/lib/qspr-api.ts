@@ -10,7 +10,11 @@ import {
   QsprSectorAnalyticsRow,
 } from "./qspr-types";
 
-const QSPR_API_BASE = process.env.NEXT_PUBLIC_QSPR_API_URL || "http://127.0.0.1:8001";
+const QSPR_API_BASE = (
+  process.env.NEXT_PUBLIC_QSPR_API_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://127.0.0.1:8001"
+).replace(/\/+$/, "");
 
 function getAuthHeader(): Record<string, string> {
   if (typeof window === "undefined") return {};
