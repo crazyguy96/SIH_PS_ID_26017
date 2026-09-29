@@ -15,6 +15,13 @@ from qspr.extractor import extract_report_label, find_header_col_map
 
 REQUIRED_TERMINOLOGY = ["paimana", "flash report"]
 
+def _release_page(page) -> None:
+    """Release pdfplumber's cached data for a processed page."""
+    try:
+        page.flush_cache()
+    except Exception:
+        pass
+
 
 @dataclass
 class ValidationResult:
@@ -36,6 +43,7 @@ def validate_pdf(path: str) -> ValidationResult:
             front_text = ""
             for page in pdf.pages[:5]:
                 front_text += (page.extract_text() or "") + "\n"
+                _release_page(page)
             front_text_lower = front_text.lower()
             terminology_hit = any(term in front_text_lower for term in REQUIRED_TERMINOLOGY)
             if terminology_hit:
@@ -46,6 +54,7 @@ def validate_pdf(path: str) -> ValidationResult:
                 wider_text = ""
                 for page in pdf.pages[:30]:
                     wider_text += (page.extract_text() or "") + "\n"
+                    _release_page(page)
                 if any(term in wider_text.lower() for term in REQUIRED_TERMINOLOGY):
                     checks.append("Found PAIMANA/Flash Report terminology in the report header.")
                     terminology_hit = True
@@ -63,13 +72,24 @@ def validate_pdf(path: str) -> ValidationResult:
             # generous window of pages for the real per-project header.
             found_table6 = False
             for page in pdf.pages[:250]:
-                for table in page.extract_tables():
-                    for row in table:
-                        if find_header_col_map(row):
-                            found_table6 = True
+                try:
+                    tables = page.extract_tables()
+                    
+                    for table in tables:
+                        for row in table:
+                            if find_header_col_map(row):
+                                found_table6 = True
+                                break
+                        if found_table6:
                             break
-                    if found_table6:
-                        break
+                            
+                except Exception:
+                    # Continue scanning other pages if one page cannot be parsed.
+                    pass
+                
+                finally:
+                    _release_page(page)
+                    
                 if found_table6:
                     break
 
