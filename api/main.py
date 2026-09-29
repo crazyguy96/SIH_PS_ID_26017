@@ -43,6 +43,7 @@ app.add_middleware(
 )
 
 app.include_router(predict_new_project_router)
+app.include_router(qspr.router)
 
 
 DB_FILE = os.path.join(
