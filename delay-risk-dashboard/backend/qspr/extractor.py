@@ -181,15 +181,27 @@ def parse_project_cell(cell: Any) -> Tuple[Optional[str], Optional[str], Optiona
     project_name = text.strip(" -") or None
     return project_name, agency, project_code, legacy_id
 
+def _release(page) -> None:
+    """Release pdfplumber's cached page objects after processing."""
+    try:
+        page.flush_cache()
+    except Exception:
+        pass
+
 
 def extract_report_label(pdf: "pdfplumber.PDF") -> Optional[str]:
     """Detect the report's month/year from the PDF's own content (never
     from the filename). Returns e.g. 'July 2026', or None if undetectable."""
     counter: Counter = Counter()
     for page in pdf.pages[:200]:
-        text = page.extract_text() or ""
-        for m in re.finditer(r"\b(" + "|".join(MONTHS) + r")\s+(\d{4})\b", text.upper()):
-            counter[(m.group(1), m.group(2))] += 1
+      text = page.extract_text() or ""
+      for m in re.finditer(
+          r"\b(" + "|".join(MONTHS) + r")\s+(\d{4})\b",
+          text.upper()
+      ):
+          counter[(m.group(1), m.group(2))] += 1
+
+      _release(page)
     if not counter:
         return None
     (month, year), _count = counter.most_common(1)[0]
@@ -222,6 +234,7 @@ def extract_all_projects(path: str) -> Tuple[Optional[str], List[Dict[str, Any]]
                     "project_id": None, "project_name": None,
                     "reason": f"Could not read tables on this page: {exc}",
                 })
+                _release(page)
                 continue
 
             for table in tables:
@@ -316,5 +329,5 @@ def extract_all_projects(path: str) -> Tuple[Optional[str], List[Dict[str, Any]]
                             "project_id": None, "project_name": None,
                             "reason": f"Unexpected error parsing this row: {exc}",
                         })
-
+            _release(page)    
     return report_label, records, issues
