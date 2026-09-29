@@ -59,9 +59,13 @@ export function AdminModelView() {
       {/* Model Specs & Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-surface dark:bg-[#141D26] border border-line dark:border-[#2A3742] p-4 rounded-lg">
-          <span className="text-xs text-ink/50 dark:text-[#8A9086]">Model Family</span>
-          <div className="font-serif text-xl font-bold mt-1 text-ink dark:text-white">LightGBM</div>
-          <span className="text-[11px] text-teal font-mono">LGBMClassifier</span>
+          <span className="text-xs text-ink/50 dark:text-[#8A9086]">
+            Predictive Model
+          </span>
+
+          <div className="font-serif text-xl font-bold mt-1 text-ink dark:text-white">
+            Production Classifier
+          </div>
         </div>
 
         <div className="bg-surface dark:bg-[#141D26] border border-line dark:border-[#2A3742] p-4 rounded-lg">

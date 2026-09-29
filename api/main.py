@@ -1815,24 +1815,23 @@ def get_regional():
                 )
             ]
 
-                # Percentage of projects with fully acquired land
-                # Treat >= 99.999% as fully acquired to avoid
-                # floating-point precision issues.
-            high_risk_land_complete_pct = (
-                    (
-                        high_risk["land_acquisition_pct"] >= 99.999
-                    ).mean() * 100
-                    if len(high_risk) > 0
-                    else 0.0
-                )
+            # Average land acquisition progress
+            # Clamp to 0-100% so anomalous source values do not distort the chart.
+            high_risk_land_progress_pct = (
+                high_risk["land_acquisition_pct"]
+                .clip(lower=0, upper=100)
+                .mean()
+                if len(high_risk) > 0
+                else 0.0
+            )
 
-            ontrack_land_complete_pct = (
-                    (
-                        ontrack["land_acquisition_pct"] >= 99.999
-                    ).mean() * 100
-                    if len(ontrack) > 0
-                    else 0.0
-                )
+            ontrack_land_progress_pct = (
+                ontrack["land_acquisition_pct"]
+                .clip(lower=0, upper=100)
+                .mean()
+                if len(ontrack) > 0
+                else 0.0
+            )
 
             timeline.append({
                     "quarter": str(quarter),
@@ -1845,12 +1844,12 @@ def get_regional():
                         ontrack["physical_progress_pct"].mean()
                     ),
 
-                    "high_risk_land_complete_pct": safe_float(
-                        high_risk_land_complete_pct
+                    "high_risk_land_progress_pct": safe_float(
+                        high_risk_land_progress_pct
                     ),
 
-                    "ontrack_land_complete_pct": safe_float(
-                        ontrack_land_complete_pct
+                    "ontrack_land_progress_pct": safe_float(
+                        ontrack_land_progress_pct
                     ),
                 })
 

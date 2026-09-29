@@ -8,7 +8,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import (
     auth, overview, projects, predict,
-    regional, alerts, model_meta
+    regional, alerts, model_meta, qspr
 )
 
 app = FastAPI(
@@ -46,6 +46,7 @@ app.include_router(predict.router)
 app.include_router(regional.router)
 app.include_router(alerts.router)
 app.include_router(model_meta.router)
+app.include_router(qspr.router)
 
 
 @app.get("/", tags=["Health & Status"])

@@ -485,6 +485,15 @@ class DataRepository:
                     "high_risk_land_pct": round(float(high_df["land_acquisition_pct"].mean()), 1) if len(high_df) else 0.0,
                     "ontrack_land_pct": round(float(on_track_df["land_acquisition_pct"].mean()), 1) if len(on_track_df) else 0.0,
                 })
+                # 4. Root causes among currently high-risk land projects
+        #
+        # Denominator:
+        #   Distinct projects that are currently High risk AND have a
+        #   land-acquisition component.
+        #
+        # A project may have multiple blocker causes, so percentages
+        # across causes are not expected to sum to 100%.
+
 
         return {
             "map_bubbles": map_bubbles,
@@ -498,29 +507,168 @@ class DataRepository:
             )
         }
 
-    def get_alerts(self, min_prob: float = 0.65) -> List[Dict[str, Any]]:
-        """In-app alert feed for inference-set projects crossing 65% delay probability."""
-        high_risk_df = self.infer_df[self.infer_df["predicted_delay_probability"] >= min_prob].copy()
-        high_risk_df = high_risk_df.sort_values(by="predicted_delay_probability", ascending=False)
+    def get_alerts(self, min_prob: float = 0.65) -> Dict[str, Any]:
+        """
+        Group high-risk inference records into operational alert groups.
 
-        alerts = []
-        for idx, row in high_risk_df.head(100).iterrows():
-            drivers = row.get("top_contributing_drivers", ["Schedule Risk"])
-            primary_driver = drivers[0] if isinstance(drivers, list) and len(drivers) > 0 else "Severe Delay Risk"
+        Grouping key:
+            region + severity
+
+        A project may appear in multiple quarterly inference rows. Therefore:
+            - record_count = number of qualifying quarterly records
+            - project_count = number of unique projects
+            - representative projects are deduplicated by project_id
+
+        The underlying inference records are not modified.
+        """
+        high_risk_df = self.infer_df[
+            self.infer_df["predicted_delay_probability"] >= min_prob
+        ].copy()
+
+        if high_risk_df.empty:
+            return {
+                "alert_count": 0,
+                "project_count": 0,
+                "group_count": 0,
+                "threshold_probability": min_prob,
+                "alerts": []
+            }
+
+        # Normalise display fields.
+        high_risk_df["region_display"] = (
+            high_risk_df["region_final"]
+            .fillna("Unknown")
+            .astype(str)
+            .str.strip()
+            .replace({"": "Unknown", "nan": "Unknown"})
+        )
+
+        high_risk_df["severity"] = np.where(
+            high_risk_df["predicted_delay_probability"] >= 0.85,
+            "CRITICAL",
+            "HIGH"
+        )
+
+        # Make sure every row has a usable primary driver.
+        high_risk_df["primary_driver"] = high_risk_df[
+            "top_contributing_drivers"
+        ].apply(
+            lambda drivers: (
+                drivers[0]
+                if isinstance(drivers, list) and len(drivers) > 0
+                else "Severe Delay Risk"
+            )
+        )
+
+        # Sort once so the most severe projects are first everywhere.
+        high_risk_df = high_risk_df.sort_values(
+            by="predicted_delay_probability",
+            ascending=False
+        )
+
+        alerts: List[Dict[str, Any]] = []
+
+        # Group operationally rather than producing one card per project.
+        for (region, severity), group in high_risk_df.groupby(
+            ["region_display", "severity"],
+            sort=False
+        ):
+            # Unique projects represented by this group.
+            unique_project_ids = group["project_id"].astype(str).str.strip().nunique()
+
+            # One representative row per project:
+            # keep the highest-risk quarterly record for that project.
+            representative_projects = (
+                group
+                .copy()
+                .sort_values("predicted_delay_probability", ascending=False)
+                .drop_duplicates(subset=["project_id"], keep="first")
+            )
+
+            # Count bottlenecks across qualifying records.
+            driver_counts = (
+                group["primary_driver"]
+                .value_counts()
+                .head(3)
+                .to_dict()
+            )
+
+            bottlenecks = [
+                {
+                    "driver": str(driver),
+                    "record_count": int(count),
+                }
+                for driver, count in driver_counts.items()
+            ]
+
+            # Keep only a small set of representative projects for the feed.
+            top_projects = []
+            for _, row in representative_projects.head(5).iterrows():
+                top_projects.append({
+                    "project_id": str(row["project_id"]),
+                    "quarter": str(row["quarter"]),
+                    "sector": str(row["sector_extracted"]),
+                    "predicted_delay_probability": float(
+                        row["predicted_delay_probability"]
+                    ),
+                    "predicted_delay_pct": float(
+                        row["predicted_delay_pct"]
+                    ),
+                    "primary_driver": str(row["primary_driver"]),
+                })
+
             alerts.append({
-                "alert_id": f"ALT-{row['project_id']}-{row['quarter']}",
-                "project_id": str(row["project_id"]),
-                "quarter": str(row["quarter"]),
-                "sector": str(row["sector_extracted"]),
-                "region": str(row["region_final"]),
-                "predicted_delay_probability": float(row["predicted_delay_probability"]),
-                "predicted_delay_pct": float(row["predicted_delay_pct"]),
-                "severity": "CRITICAL" if row["predicted_delay_probability"] >= 0.85 else "HIGH",
-                "primary_driver": primary_driver,
-                "label_confidence_tier": str(row.get("label_confidence_tier", "unknown")),
-                "timestamp": f"2026-Q1 Alert Cycle"
+                "alert_id": f"GROUP-{severity}-{region.replace(' ', '-').replace('/', '-')}",
+                "region": region,
+                "severity": severity,
+
+                # Quarterly rows crossing the threshold.
+                "record_count": int(len(group)),
+
+                # Actual distinct projects represented.
+                "project_count": int(unique_project_ids),
+
+                # Group-level risk statistics.
+                "average_probability": float(
+                    group["predicted_delay_probability"].mean()
+                ),
+                "max_probability": float(
+                    group["predicted_delay_probability"].max()
+                ),
+
+                # Main operational bottlenecks.
+                "top_bottlenecks": bottlenecks,
+
+                # Highest-risk representative projects.
+                "projects": top_projects,
+
+                "timestamp": "2026-Q1 Alert Cycle",
             })
-        return alerts
+
+        # Keep CRITICAL groups first, then HIGH.
+        alerts.sort(
+            key=lambda x: (
+                0 if x["severity"] == "CRITICAL" else 1,
+                -x["average_probability"],
+                -x["project_count"],
+            )
+        )
+
+        return {
+            # All threshold-crossing quarterly records.
+            "alert_count": int(len(high_risk_df)),
+
+            # Distinct projects represented by those records.
+            "project_count": int(
+                high_risk_df["project_id"].astype(str).str.strip().nunique()
+            ),
+
+            # Number of operational cards shown by the UI.
+            "group_count": int(len(alerts)),
+
+            "threshold_probability": min_prob,
+            "alerts": alerts,
+        }
 
     def get_model_metadata(self) -> Dict[str, Any]:
         """Admin-only model governance metrics from held-out test set."""

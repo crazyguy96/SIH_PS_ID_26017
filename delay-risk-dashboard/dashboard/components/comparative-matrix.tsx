@@ -134,10 +134,10 @@ export function ComparativeMatrix({ regions, matrix, timeline }: ComparativeMatr
           <div>
             <div className="flex items-center gap-2">
               <TrendingUp size={18} className="text-teal" />
-              <h3 className="font-serif text-lg font-semibold">Quarterly Progress Trajectory</h3>
+              <h3 className="font-serif text-lg font-semibold">Land Acquisition & Delay Drivers</h3>
             </div>
             <p className="text-xs text-ink/60 dark:text-[#8A9086] mt-0.5">
-              Comparing physical progress and land acquisition completion across reporting quarters
+              Physical progress over time and the main blockers affecting high-risk land projects
             </p>
           </div>
         </div>
@@ -229,86 +229,6 @@ export function ComparativeMatrix({ regions, matrix, timeline }: ComparativeMatr
             </div>
           </div>
 
-          {/* Land Acquisition */}
-          <div>
-            <p className="text-xs text-ink/60 dark:text-[#8A9086] mb-2">
-              Percentage of projects with land fully acquired
-            </p>
-
-            <div className="h-[260px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={timeline}
-                  margin={{
-                    top: 10,
-                    right: 20,
-                    left: 0,
-                    bottom: 20,
-                  }}
-                >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke="#88888820"
-                  />
-
-                  <XAxis
-                    dataKey="quarter"
-                    interval={3}
-                    tick={{ fontSize: 11 }}
-                    angle={-30}
-                    textAnchor="end"
-                  />
-
-                  <YAxis
-                    tick={{ fontSize: 11 }}
-                    domain={[0, 100]}
-                    unit="%"
-                  />
-
-                  <Tooltip
-                    offset={15}
-                    wrapperStyle={{
-                      transform: "translateY(-25px)",
-                      pointerEvents: "none",
-                    }}
-                    contentStyle={{
-                      backgroundColor: "#1F2937",
-                      borderColor: "#374151",
-                      borderRadius: 6,
-                      color: "#F9FAFB",
-                      fontSize: 11,
-                      padding: "8px 10px",
-                    }}
-                    formatter={(value: number | string, name: string) => [
-                      `${Number(value).toFixed(1)}%`,
-                      name,
-                    ]}
-                  />
-
-                  <Legend
-                    wrapperStyle={{
-                      fontSize: 12,
-                      paddingTop: 10,
-                    }}
-                  />
-
-                  <Bar
-                    dataKey="ontrack_land_complete_pct"
-                    name="On-Track Fully Acquired"
-                    fill="#0284C7"
-                    radius={[3, 3, 0, 0]}
-                  />
-
-                  <Bar
-                    dataKey="high_risk_land_complete_pct"
-                    name="High-Risk Fully Acquired"
-                    fill="#D97706"
-                    radius={[3, 3, 0, 0]}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
 
         </div>
       </div>

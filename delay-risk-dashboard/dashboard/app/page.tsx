@@ -27,6 +27,7 @@ import { MapView } from "@/components/map-view";
 import { ComparativeMatrix } from "@/components/comparative-matrix";
 import { AlertsPanel } from "@/components/alerts-panel";
 import { AdminModelView } from "@/components/admin-model-view";
+import { QsprSection } from "@/components/qspr/qspr-section";
 import { Shield, RefreshCw, AlertCircle } from "lucide-react";
 
 export default function DashboardPage() {
@@ -217,77 +218,101 @@ useEffect(() => {
 
       {/* Main Content Area */}
       <main className="flex-1 min-w-0 px-4 sm:px-8 py-7">
-        {/* Top Header Strip */}
-        <header className="sticky top-0 z-30 bg-paper/95 dark:bg-[#0F151B]/95 backdrop-blur border-b border-line dark:border-[#2A3742] py-3 mb-6">
+        {/* Top Header */}
+        <header className="sticky top-0 z-30 -mx-4 sm:-mx-8 px-4 sm:px-8 py-4 mb-6
+          bg-[#FDFCFB]/95 dark:bg-[#0D141C]/95 backdrop-blur-xl
+          border-b border-slate-200/80 dark:border-slate-700/50">
+
           <div className="flex items-center justify-between gap-4">
 
-            {/* Brand + Current Page */}
-            <div className="min-w-0">
-              <div className="flex items-center gap-3">
-                <div className="shrink-0">
-                  <div className="text-[10px] font-mono text-ink/50 dark:text-[#8A9086] uppercase tracking-wider">
-                    MoRD • SIH 26017
-                  </div>
-                  <div className="text-sm font-semibold text-ink dark:text-white">
-                    Land Acquisition Risk DSS
-                  </div>
+            {/* Left: page identity */}
+            <div className="flex items-center gap-3 min-w-0">
+
+              <div className="hidden sm:flex h-9 w-9 items-center justify-center rounded-xl
+                bg-teal/10 dark:bg-teal/15 border border-teal/20">
+                <Shield size={17} className="text-teal" />
+              </div>
+
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em]
+                    text-teal">
+                    Risk Intelligence
+                  </span>
+
+                  <span className="hidden md:inline text-slate-300 dark:text-slate-600">
+                    /
+                  </span>
+
+                  <span className="hidden md:inline text-[10px] text-ink/40 dark:text-slate-500">
+                    Land Acquisition DSS
+                  </span>
                 </div>
 
-                <div className="h-7 w-px bg-line dark:bg-[#2A3742]" />
-
-                <h1 className="text-lg sm:text-xl font-semibold text-ink dark:text-white truncate">
+                <h1 className="mt-1 text-xl sm:text-2xl font-semibold tracking-tight
+                  text-ink dark:text-white truncate">
                   {activeSection === "overview" && "Executive Overview"}
                   {activeSection === "register" && "Risk Register"}
                   {activeSection === "predict-new" && "Predict New Project"}
+                  {activeSection === "qspr" && "QSPR / PAIMANA Prediction"}
                   {activeSection === "regional" && "Regional Analytics"}
                   {activeSection === "alerts" && "Alerts Feed"}
                   {activeSection === "model" && "Model Governance"}
                 </h1>
               </div>
-
-              <div className="flex items-center gap-2 text-[11px] mt-1.5 text-ink/60 dark:text-[#8A9086]">
-                <span className="flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-                  LightGBM + TreeSHAP
-                </span>
-              </div>
             </div>
 
-            {/* Header Controls */}
+            {/* Right: controls */}
             <div className="flex items-center gap-2 shrink-0">
-              <div className="text-[10px] uppercase tracking-wide text-ink/40 dark:text-[#717870] hidden sm:block">
-                Role
+
+              {/* System status */}
+              <div className="hidden lg:flex items-center gap-2 px-3 py-2 rounded-xl
+                border border-slate-200 dark:border-slate-700
+                bg-white/70 dark:bg-[#141D26]">
+                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                <span className="text-[10px] font-medium text-ink/60 dark:text-slate-400">
+                  System Active
+                </span>
               </div>
 
+              {/* Role */}
               <RoleSelector
                 currentRole={userProfile.role}
                 onUserChange={handleRoleChange}
               />
 
+              {/* Refresh */}
               <button
                 onClick={loadGlobalData}
-                className="p-2 rounded-lg border border-line dark:border-[#2A3742] bg-surface dark:bg-[#141D26] hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="h-10 w-10 flex items-center justify-center rounded-xl
+                  border border-slate-200 dark:border-slate-700
+                  bg-white dark:bg-[#141D26]
+                  hover:bg-slate-50 dark:hover:bg-slate-800
+                  transition-all"
                 title="Refresh live metrics"
               >
                 <RefreshCw
-                  size={14}
+                  size={15}
                   className={
                     loadingOverview
                       ? "animate-spin text-teal"
-                      : "text-ink/60"
+                      : "text-ink/60 dark:text-slate-400"
                   }
                 />
               </button>
             </div>
           </div>
 
-          {/* Backend Connection Error Warning */}
+          {/* Backend warning */}
           {apiError && (
-            <div className="mt-3 p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg flex items-center gap-2 text-xs text-red-800 dark:text-red-300">
-              <AlertCircle size={16} className="shrink-0" />
+            <div className="mt-3 flex items-center gap-2 rounded-xl
+              border border-red-200 dark:border-red-900/60
+              bg-red-50 dark:bg-red-950/30
+              px-3 py-2.5 text-xs
+              text-red-800 dark:text-red-300">
+              <AlertCircle size={15} className="shrink-0" />
               <span>
-                Backend Status Warning: {apiError}. Ensure FastAPI is running
-                (`cd backend &amp;&amp; uvicorn main:app --reload`).
+                Backend Status Warning: {apiError}
               </span>
             </div>
           )}
@@ -426,6 +451,13 @@ useEffect(() => {
         {activeSection === "predict-new" && (
           <div className="space-y-5">
             <PredictNewProjectForm />
+          </div>
+        )}
+
+        {/* SECTION 4B: QSPR / PAIMANA PREDICTION (independent subsystem) */}
+        {activeSection === "qspr" && (
+          <div className="space-y-5">
+            <QsprSection />
           </div>
         )}
         

@@ -219,9 +219,10 @@ export interface ProgressTimelinePoint {
   quarter: string;
   high_risk_physical_progress: number;
   ontrack_physical_progress: number;
-  high_risk_land_complete_pct: number;
-  ontrack_land_complete_pct: number;
+  high_risk_land_progress_pct: number;
+  ontrack_land_progress_pct: number;
 }
+
 
 export interface RegionalAnalyticsData {
   map_bubbles: RegionalBubble[];
@@ -232,19 +233,43 @@ export interface RegionalAnalyticsData {
   gis_governance_notice: string;
 }
 
-export interface AlertItem {
-  alert_id: string;
+
+export interface AlertProjectPreview {
   project_id: string;
   quarter: string;
   sector: string;
-  region: string;
   predicted_delay_probability: number;
   predicted_delay_pct: number;
-  severity: "CRITICAL" | "HIGH";
   primary_driver: string;
-  label_confidence_tier: string;
+}
+
+export interface AlertBottleneck {
+  driver: string;
+  record_count: number;
+}
+
+export interface AlertItem {
+  alert_id: string;
+  region: string;
+  severity: "CRITICAL" | "HIGH";
+
+  // Quarterly inference records crossing the threshold.
+  record_count: number;
+
+  // Distinct projects represented.
+  project_count: number;
+
+  // Group-level risk statistics.
+  average_probability: number;
+  max_probability: number;
+
+  // Main delay drivers represented in the group.
+  top_bottlenecks: AlertBottleneck[];
+
+  // Small drill-down list.
+  projects: AlertProjectPreview[];
+
   timestamp: string;
-  recommended_actions?: string;
 }
 
 export interface ModelMetadata {

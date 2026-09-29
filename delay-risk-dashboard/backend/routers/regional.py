@@ -13,4 +13,7 @@ def get_regional_summary():
     - GIS data governance disclaimer
     """
     repo = get_data_repo()
-    return repo.get_regional_analytics()
+    print("🔥 REGIONAL ROUTER CALLED 🔥", flush=True)
+    result = repo.get_regional_analytics()
+    print("🔥 RESULT KEYS:", result.keys(), flush=True)
+    return result

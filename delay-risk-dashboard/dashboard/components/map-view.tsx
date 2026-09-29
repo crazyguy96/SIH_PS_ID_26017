@@ -85,6 +85,34 @@ const REGIONAL_HEAT_NODES: Record<string, [number, number, number][]> = {
   ],
 };
 
+function formatPercentage2(
+  value: number | null | undefined
+): string {
+  if (
+    value === null ||
+    value === undefined ||
+    Number.isNaN(Number(value))
+  ) {
+    return "0.00%";
+  }
+
+  return `${Number(value).toFixed(2)}%`;
+}
+
+function formatProbabilityPercentage2(
+  value: number | null | undefined
+): string {
+  if (
+    value === null ||
+    value === undefined ||
+    Number.isNaN(Number(value))
+  ) {
+    return "0.00%";
+  }
+
+  return `${(Number(value) * 100).toFixed(2)}%`;
+}
+
 export function MapView({ bubbles, selectedRegion, onSelectRegion, onNavigateToRegister }: MapViewProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
@@ -243,8 +271,18 @@ export function MapView({ bubbles, selectedRegion, onSelectRegion, onNavigateToR
           `<div class="p-1 text-xs font-sans">
             <strong class="text-sm font-semibold">${b.region} Zone</strong><br/>
             <span>Total Projects: <b>${b.total_projects}</b></span><br/>
-            <span>High Risk (&gt;65%): <b>${b.high_risk_count} (${b.high_risk_pct}%)</b></span><br/>
-            <span>Avg Delay Probability: <b>${formatPct(b.avg_delay_probability)}</b></span>
+            <span>
+              High Risk (&gt;65%): <b>
+                ${b.high_risk_count} (${formatPercentage2(b.high_risk_pct)})
+              </b>
+            </span><br/>
+            <span>
+              Avg Delay Probability: <b>
+                ${formatProbabilityPercentage2(
+                  b.avg_delay_probability
+                )}
+              </b>
+            </span>
           </div>`,
           { direction: "top", offset: [0, -radius] }
         );
@@ -410,7 +448,9 @@ export function MapView({ bubbles, selectedRegion, onSelectRegion, onNavigateToR
                         : RISK_COLORS.Low,
                   }}
                 >
-                  {currentRegionData.high_risk_pct}% High Risk
+                  {formatPercentage2(
+                    currentRegionData.high_risk_pct
+                  )} High Risk
                 </span>
               </div>
 
@@ -421,7 +461,9 @@ export function MapView({ bubbles, selectedRegion, onSelectRegion, onNavigateToR
                     Mean Delay Probability
                   </span>
                   <strong className="text-sm text-ink dark:text-white">
-                    {formatPct(currentRegionData.avg_delay_probability)}
+                    {formatProbabilityPercentage2(
+                      currentRegionData.avg_delay_probability
+                    )}
                   </strong>
                 </div>
 
@@ -521,7 +563,7 @@ export function MapView({ bubbles, selectedRegion, onSelectRegion, onNavigateToR
         <Info size={16} className="shrink-0 mt-0.5 text-amber-700 dark:text-amber-400" />
         <div>
           <strong>Spatial Boundary Note:</strong> Map display is geographically constrained strictly to the Republic of India.
-          Heat density surface is computed over regional monitoring nodes using trained LightGBM inference likelihoods
+          Heat density surface is computed from regional model-derived risk likelihoods.
           without fabricating street-level GPS coordinates.
         </div>
       </div>

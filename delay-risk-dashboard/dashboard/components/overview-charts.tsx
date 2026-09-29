@@ -71,15 +71,21 @@ export function OverviewCharts({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {/* REGIONAL */}
-        <div className="bg-surface dark:bg-[#141D26] border border-line dark:border-[#2A3742] p-5 rounded-lg">
+        <div className="
+          rounded-2xl
+          border border-slate-200/80 dark:border-slate-700/60
+          bg-white dark:bg-[#141D26]
+          p-5
+          shadow-[0_2px_10px_rgba(15,23,42,0.04)]
+        ">
           <div className="flex items-center gap-2 mb-1">
             <Map size={18} className="text-teal" />
-            <h3 className="font-serif text-lg font-semibold">
+            <h3 className="text-sm font-semibold tracking-tight text-ink dark:text-white">
               Delay Risk by Region
             </h3>
           </div>
 
-          <p className="text-xs text-ink/60 dark:text-[#8A9086] mb-4">
+          <p className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400 mb-5">
             Project volume and high-risk proportion across monitoring zones
           </p>
 
@@ -98,9 +104,14 @@ export function OverviewCharts({
 
                 <XAxis
                   dataKey="region"
-                  tick={{ fontSize: 11 }}
-                  angle={-25}
+                  tick={{ fontSize: 10 }}
+                  interval={0}
+                  angle={-20}
                   textAnchor="end"
+                  height={55}
+                  tickFormatter={(value) =>
+                    value.length > 11 ? `${value.substring(0, 10)}...` : value
+                  }
                 />
 
                 <YAxis
@@ -116,7 +127,19 @@ export function OverviewCharts({
                   domain={[0, 100]}
                 />
 
-                <Tooltip />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "white",
+                    border: "1px solid #E2E8F0",
+                    borderRadius: "12px",
+                    boxShadow: "0 8px 24px rgba(15, 23, 42, 0.08)",
+                    fontSize: "11px",
+                  }}
+                  labelStyle={{
+                    fontWeight: 600,
+                    marginBottom: 4,
+                  }}
+                />
                 <Legend />
 
                 <Bar
@@ -140,15 +163,21 @@ export function OverviewCharts({
         </div>
 
         {/* SECTOR */}
-        <div className="bg-surface dark:bg-[#141D26] border border-line dark:border-[#2A3742] p-5 rounded-lg">
+        <div className="
+          rounded-2xl
+          border border-slate-200/80 dark:border-slate-700/60
+          bg-white dark:bg-[#141D26]
+          p-5
+          shadow-[0_2px_10px_rgba(15,23,42,0.04)]
+        ">
           <div className="flex items-center gap-2 mb-1">
             <Layers size={18} className="text-teal" />
-            <h3 className="font-serif text-lg font-semibold">
+            <h3 className="text-sm font-semibold tracking-tight text-ink dark:text-white">
               Top 10 Sectors Risk Profile
             </h3>
           </div>
 
-          <p className="text-xs text-ink/60 dark:text-[#8A9086] mb-4">
+          <p className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400 mb-5">
             Project volume and average delay likelihood across sectors
           </p>
 
@@ -160,7 +189,7 @@ export function OverviewCharts({
                   top: 10,
                   right: 10,
                   left: 0,
-                  bottom: 35,
+                  bottom: 15,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
@@ -168,17 +197,16 @@ export function OverviewCharts({
                 <XAxis
                   dataKey="sector"
                   tick={{ fontSize: 9 }}
-                  angle={-35}
-                  textAnchor="end"
                   interval={0}
-                  tickFormatter={(s) =>
-                    s.length > 14
-                      ? `${s.substring(0, 13)}...`
-                      : s
+                  angle={-32}
+                  textAnchor="end"
+                  height={65}
+                  tickFormatter={(value) =>
+                    value.length > 13 ? `${value.substring(0, 12)}...` : value
                   }
                 />
 
-                <YAxis
+               <YAxis
                   yAxisId="left"
                   tick={{ fontSize: 11 }}
                 />
@@ -191,7 +219,19 @@ export function OverviewCharts({
                   domain={[0, 100]}
                 />
 
-                <Tooltip />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "white",
+                    border: "1px solid #E2E8F0",
+                    borderRadius: "12px",
+                    boxShadow: "0 8px 24px rgba(15, 23, 42, 0.08)",
+                    fontSize: "11px",
+                  }}
+                  labelStyle={{
+                    fontWeight: 600,
+                    marginBottom: 4,
+                  }}
+                />
                 <Legend />
 
                 <Bar
@@ -216,15 +256,21 @@ export function OverviewCharts({
       </div>
 
       {/* QUARTERLY */}
-      <div className="bg-surface dark:bg-[#141D26] border border-line dark:border-[#2A3742] p-5 rounded-lg">
+      <div className="
+          rounded-2xl
+          border border-slate-200/80 dark:border-slate-700/60
+          bg-white dark:bg-[#141D26]
+          p-5
+          shadow-[0_2px_10px_rgba(15,23,42,0.04)]
+        ">
         <div className="flex items-center gap-2 mb-1">
           <TrendingUp size={18} className="text-teal" />
-          <h3 className="font-serif text-lg font-semibold">
+          <h3 className="text-sm font-semibold tracking-tight text-ink dark:text-white">
             Chronological Delay Risk Trend Across Quarters
           </h3>
         </div>
 
-        <p className="text-xs text-ink/60 dark:text-[#8A9086] mb-4">
+        <p className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400 mb-5">
           Evolution of average delay likelihood over successive reporting cycles
         </p>
 
@@ -249,23 +295,27 @@ export function OverviewCharts({
               />
 
               <YAxis
-                yAxisId="left"
                 tick={{ fontSize: 11 }}
                 domain={[0, 100]}
                 unit="%"
               />
 
-              <YAxis
-                yAxisId="right"
-                orientation="right"
-                tick={{ fontSize: 11 }}
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "white",
+                  border: "1px solid #E2E8F0",
+                  borderRadius: "12px",
+                  boxShadow: "0 8px 24px rgba(15, 23, 42, 0.08)",
+                  fontSize: "11px",
+                }}
+                labelStyle={{
+                  fontWeight: 600,
+                  marginBottom: 4,
+                }}
               />
-
-              <Tooltip />
               <Legend />
 
               <Line
-                yAxisId="left"
                 type="monotone"
                 dataKey="probability"
                 name="Avg Delay Probability (%)"
@@ -274,16 +324,6 @@ export function OverviewCharts({
                 dot={{ r: 2.5 }}
               />
 
-              <Line
-                yAxisId="right"
-                type="monotone"
-                dataKey="total"
-                name="Monitored Projects Count"
-                stroke="#475569"
-                strokeDasharray="3 3"
-                strokeWidth={1.5}
-                dot={{ r: 1.5 }}
-              />
             </LineChart>
           </ResponsiveContainer>
         </div>

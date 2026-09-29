@@ -58,3 +58,54 @@
          hover:opacity-90 transition-opacity disabled:opacity-50
          disabled:cursor-not-allowed;
 }
+
+/* ===== Dashboard Visual System ===== */
+
+body {
+  margin: 0;
+  background: #f4f6f3 !important;
+  color: #17211b;
+}
+
+/* Main page surfaces */
+.bg-paper {
+  background-color: #f4f6f3 !important;
+}
+
+.bg-surface {
+  background-color: #ffffff !important;
+}
+
+/* Card borders */
+.border-line {
+  border-color: #dfe5e1 !important;
+}
+
+/* Card depth */
+.bg-surface {
+  box-shadow: 0 2px 8px rgba(20, 40, 30, 0.05);
+}
+
+/* Slightly cleaner cards */
+.rounded-lg {
+  border-radius: 12px;
+}
+
+/* Dark mode */
+.dark body {
+  background: #0f1720 !important;
+  color: #e7e9e2;
+}
+
+.dark .bg-paper {
+  background-color: #0f1720 !important;
+}
+
+.dark .bg-surface {
+  background-color: #141d26 !important;
+  box-shadow: none;
+}
+
+.dark .border-line {
+  border-color: #2a3742 !important;
+}

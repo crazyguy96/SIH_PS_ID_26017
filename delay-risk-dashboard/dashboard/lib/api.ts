@@ -217,16 +217,27 @@ export async function fetchRegionalAnalytics(): Promise<RegionalAnalyticsData> {
   return res.json();
 }
 
-export async function fetchAlerts(minProb: number = 0.65): Promise<{
+export async function fetchAlerts(
+  minProb: number = 0.65
+): Promise<{
   alert_count: number;
+  project_count: number;
+  group_count: number;
   threshold_probability: number;
   alerts: AlertItem[];
 }> {
-  const res = await fetch(`${API_BASE}/api/alerts?min_probability=${minProb}`, {
-    headers: { ...getAuthHeader() },
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error(`Alerts fetch failed: ${res.statusText}`);
+  const res = await fetch(
+    `${API_BASE}/api/alerts?min_probability=${minProb}`,
+    {
+      headers: { ...getAuthHeader() },
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Alerts fetch failed: ${res.statusText}`);
+  }
+
   return res.json();
 }
 

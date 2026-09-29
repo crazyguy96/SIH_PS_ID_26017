@@ -1,0 +1,10 @@
+# Additional dependencies for the QSPR/PAIMANA subsystem, on top of
+# whatever the existing backend already has installed (fastapi, pydantic,
+# pandas, numpy, joblib).
+#
+# Install with:
+#   pip install -r qspr/requirements-qspr.txt
+
+pdfplumber>=0.11.0
+scikit-learn>=1.4.0
+python-multipart>=0.0.9   # required by FastAPI's UploadFile/File(...)
