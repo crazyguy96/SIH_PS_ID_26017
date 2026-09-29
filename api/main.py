@@ -5,6 +5,19 @@ from fastapi import FastAPI, Query
 import sqlite3
 import os
 from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
+import sys
+
+QSPR_BACKEND_DIR = (
+    Path(__file__).resolve().parents[1]
+    / "delay-risk-dashboard"
+    / "backend"
+)
+
+if str(QSPR_BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(QSPR_BACKEND_DIR))
+
+from routers import qspr
 
 from .predict_new_project import router as predict_new_project_router
 
