@@ -195,13 +195,13 @@ def extract_report_label(pdf: "pdfplumber.PDF") -> Optional[str]:
     counter: Counter = Counter()
     for page in pdf.pages[:200]:
       text = page.extract_text() or ""
+      _release(page)
       for m in re.finditer(
           r"\b(" + "|".join(MONTHS) + r")\s+(\d{4})\b",
           text.upper()
       ):
           counter[(m.group(1), m.group(2))] += 1
-
-      _release(page)
+        
     if not counter:
         return None
     (month, year), _count = counter.most_common(1)[0]
