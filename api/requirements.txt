@@ -7,3 +7,4 @@ lightgbm
 joblib
 shap
 pdfplumber
+python-multipart
