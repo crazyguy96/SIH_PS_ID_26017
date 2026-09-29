@@ -21,6 +21,7 @@ app.add_middleware(
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "https://luminous-melomakarona-8b211d.netlify.app",
+        "https://sih-ps-id-26017-files.vercel.app"
 
     ],
     allow_credentials=True,
