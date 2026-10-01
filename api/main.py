@@ -8,11 +8,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 import sys
 
+
 QSPR_BACKEND_DIR = (
     Path(__file__).resolve().parents[1]
     / "delay-risk-dashboard"
     / "backend"
 )
+QSPR_BACKEND_DIR = Path(__file__).resolve().parents[1] / "delay-risk-dashboard" / "backend"
+
 
 if str(QSPR_BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(QSPR_BACKEND_DIR))
@@ -35,6 +38,9 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "https://luminous-melomakarona-8b211d.netlify.app",
         "https://sih-ps-id-26017-files.vercel.app"
+
+
+
 
     ],
     allow_credentials=True,

@@ -59,7 +59,7 @@ import pandas as pd
 import joblib
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
-from typing import Optional, List
+from typing import Optional, List, Tuple, Dict, Any
 from email_notifier import send_email
 
 # --- import sibling modules from the project root (one level up from api/) ---
@@ -101,8 +101,8 @@ CRITICAL_SECTORS = {
     "ROAD TRANSPORT AND HIGHWAYS": 1.0,
     "RAILWAYS": 1.0,
     "POWER": 0.9,
-    "PORTS": 0.9,
-    "AIRPORT": 0.8,
+    "SHIPPING AND PORTS": 0.9,
+    "CIVIL AVIATION": 0.8,
 }
 
 # Mirrors explain_and_score.py's RECOMMENDATIONS dict (raw feature name/prefix
@@ -267,7 +267,9 @@ class NewProjectInput(BaseModel):
     )
 
 
-def _build_feature_row(payload: NewProjectInput) -> pd.DataFrame:
+def _build_feature_row(
+    payload: NewProjectInput,
+) -> Tuple[pd.DataFrame, Dict[str, Any]]:
     land_required = payload.land_required_ha
     land_acquired = payload.land_acquired_ha
     land_possession = payload.land_possession_ha
@@ -450,7 +452,7 @@ def predict_new_project(payload: NewProjectInput):
         "original_completion_date_was_missing (original completion date not supplied)"
     )
 
-        prediction_result = {
+    prediction_result = {
         "project_id": payload.project_id,
         "predicted_delay_probability": round(proba * 100, 1),
         "risk_tier": risk_tier,
